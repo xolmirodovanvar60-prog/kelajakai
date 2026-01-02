@@ -13,17 +13,47 @@ serve(async (req) => {
 
   try {
     const { messages } = await req.json();
+    
+    // Input validation
+    if (!messages || !Array.isArray(messages)) {
+      return new Response(JSON.stringify({ error: 'Invalid request' }), {
+        status: 400,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+    
+    // Limit messages array length
+    if (messages.length > 20) {
+      return new Response(JSON.stringify({ error: 'Too many messages' }), {
+        status: 400,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+    
+    // Validate and sanitize each message
+    const validatedMessages = messages.slice(-10).map((msg: { role: string; content: string }) => ({
+      role: msg.role === 'assistant' ? 'assistant' : 'user',
+      content: typeof msg.content === 'string' ? msg.content.slice(0, 2000) : ''
+    })).filter((msg: { content: string }) => msg.content.length > 0);
+
+    if (validatedMessages.length === 0) {
+      return new Response(JSON.stringify({ error: 'No valid messages' }), {
+        status: 400,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+
     const OPENAI_API_KEY = Deno.env.get('OPENAI_API_KEY');
 
     if (!OPENAI_API_KEY) {
       console.error('OPENAI_API_KEY is not configured');
-      return new Response(JSON.stringify({ error: 'API key not configured' }), {
+      return new Response(JSON.stringify({ error: 'Service unavailable' }), {
         status: 500,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       });
     }
 
-    console.log('Processing AI teacher request with messages:', messages.length);
+    console.log('Processing AI teacher request with messages:', validatedMessages.length);
 
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
@@ -44,7 +74,7 @@ Javoblaringiz qisqa va aniq bo'lsin - 2-3 paragrafdan oshmasin.
 Har bir javobda bolalarni ilm olishga rag'batlantiring.
 Eng so'nggi ilmiy yangiliklardan foydalaning.` 
           },
-          ...messages
+          ...validatedMessages
         ],
         max_tokens: 500,
         temperature: 0.7
@@ -52,9 +82,8 @@ Eng so'nggi ilmiy yangiliklardan foydalaning.`
     });
 
     if (!response.ok) {
-      const errorText = await response.text();
-      console.error('OpenAI API error:', response.status, errorText);
-      return new Response(JSON.stringify({ error: 'AI service error' }), {
+      console.error('OpenAI API error:', response.status);
+      return new Response(JSON.stringify({ error: 'Service unavailable' }), {
         status: 500,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       });
@@ -70,8 +99,7 @@ Eng so'nggi ilmiy yangiliklardan foydalaning.`
     });
   } catch (error) {
     console.error('Error in ai-teacher function:', error);
-    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-    return new Response(JSON.stringify({ error: errorMessage }), {
+    return new Response(JSON.stringify({ error: 'Service unavailable' }), {
       status: 500,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
