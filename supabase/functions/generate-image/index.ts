@@ -13,17 +13,36 @@ serve(async (req) => {
 
   try {
     const { prompt } = await req.json();
+    
+    // Input validation
+    if (!prompt || typeof prompt !== 'string') {
+      return new Response(JSON.stringify({ error: 'Invalid request' }), {
+        status: 400,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+    
+    // Limit prompt length to prevent abuse (max 500 chars)
+    const sanitizedPrompt = prompt.slice(0, 500).trim();
+    
+    if (sanitizedPrompt.length === 0) {
+      return new Response(JSON.stringify({ error: 'Prompt is required' }), {
+        status: 400,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+
     const OPENAI_API_KEY = Deno.env.get('OPENAI_API_KEY');
 
     if (!OPENAI_API_KEY) {
       console.error('OPENAI_API_KEY is not configured');
-      return new Response(JSON.stringify({ error: 'API key not configured' }), {
+      return new Response(JSON.stringify({ error: 'Service unavailable' }), {
         status: 500,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       });
     }
 
-    console.log('Generating image for prompt:', prompt);
+    console.log('Generating image for prompt length:', sanitizedPrompt.length);
 
     const response = await fetch('https://api.openai.com/v1/images/generations', {
       method: 'POST',
@@ -33,7 +52,7 @@ serve(async (req) => {
       },
       body: JSON.stringify({
         model: 'dall-e-3',
-        prompt: `Educational bright illustration for children about: ${prompt}. Style: Colorful, friendly, 3D rendered, suitable for young students. High quality, clean design.`,
+        prompt: `Educational bright illustration for children about: ${sanitizedPrompt}. Style: Colorful, friendly, 3D rendered, suitable for young students. High quality, clean design.`,
         size: '1024x1024',
         quality: 'standard',
         n: 1,
@@ -41,9 +60,8 @@ serve(async (req) => {
     });
 
     if (!response.ok) {
-      const errorText = await response.text();
-      console.error('DALL-E API error:', response.status, errorText);
-      return new Response(JSON.stringify({ error: 'Image generation service error' }), {
+      console.error('DALL-E API error:', response.status);
+      return new Response(JSON.stringify({ error: 'Service unavailable' }), {
         status: 500,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       });
@@ -59,8 +77,7 @@ serve(async (req) => {
     });
   } catch (error) {
     console.error('Error in generate-image function:', error);
-    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-    return new Response(JSON.stringify({ error: errorMessage }), {
+    return new Response(JSON.stringify({ error: 'Service unavailable' }), {
       status: 500,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });

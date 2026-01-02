@@ -92,12 +92,22 @@ export function useAITeacher() {
 
   const generateImage = useCallback(async (prompt: string) => {
     try {
-      const { data, error } = await supabase.functions.invoke('generate-image', {
-        body: { prompt }
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/generate-image`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'apikey': import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY,
+            'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
+          },
+          body: JSON.stringify({ prompt }),
+        }
+      );
 
-      if (error) throw error;
+      if (!response.ok) throw new Error('Image generation failed');
       
+      const data = await response.json();
       if (data.imageUrl) {
         setCurrentImage(data.imageUrl);
       }
