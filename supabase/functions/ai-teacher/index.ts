@@ -1,20 +1,35 @@
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 
-const ALLOWED_ORIGINS = [
-  'https://epzjffdslivfhmetnkfa.lovableproject.com',
-  'https://epzjffdslivfhmetnkfa.lovable.app',
-  'http://localhost:5173',
-  'http://localhost:8080',
-];
+const ALLOWED_HOSTS = new Set(['localhost', '127.0.0.1']);
+
+function isAllowedOrigin(origin: string) {
+  try {
+    const url = new URL(origin);
+    const host = url.hostname;
+
+    if (ALLOWED_HOSTS.has(host)) return true;
+
+    return (
+      host === 'lovableproject.com' ||
+      host.endsWith('.lovableproject.com') ||
+      host === 'lovable.app' ||
+      host.endsWith('.lovable.app')
+    );
+  } catch {
+    return false;
+  }
+}
 
 function getCorsHeaders(req: Request) {
-  const origin = req.headers.get('origin') || '';
-  const allowedOrigin = ALLOWED_ORIGINS.includes(origin) ? origin : ALLOWED_ORIGINS[0];
+  const origin = req.headers.get('origin') ?? '';
+  const allowedOrigin = origin && isAllowedOrigin(origin) ? origin : 'null';
+
   return {
     'Access-Control-Allow-Origin': allowedOrigin,
     'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
-    'Access-Control-Allow-Credentials': 'true',
+    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+    'Vary': 'Origin',
   };
 }
 
