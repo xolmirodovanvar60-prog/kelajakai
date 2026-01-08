@@ -188,5 +188,6 @@ export function useHybridAITeacher() {
     askQuestion,
     clearHistory,
     stopAudio,
+    speakResponse,
   };
 }

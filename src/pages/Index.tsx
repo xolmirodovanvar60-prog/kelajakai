@@ -22,6 +22,7 @@ const Index = () => {
     askQuestion,
     clearHistory,
     stopAudio,
+    speakResponse,
   } = useHybridAITeacher();
 
   const handleSubmit = (text?: string) => {
@@ -101,7 +102,7 @@ const Index = () => {
 
           {/* Chat History */}
           <div className="flex-1 bg-white/60 backdrop-blur-xl rounded-3xl border border-slate-100 shadow-xl shadow-slate-100/50 flex flex-col min-h-[300px] lg:min-h-[400px] overflow-hidden">
-            <ChatHistory messages={messages} />
+            <ChatHistory messages={messages} onPlayAudio={speakResponse} isPlayingAudio={isPlayingAudio} />
             
             {/* Audio Playing Indicator */}
             <AnimatePresence>

@@ -6,9 +6,11 @@ import { ChatMessage } from './ChatMessage';
 
 interface ChatHistoryProps {
   messages: Message[];
+  onPlayAudio?: (text: string) => void;
+  isPlayingAudio?: boolean;
 }
 
-export function ChatHistory({ messages }: ChatHistoryProps) {
+export function ChatHistory({ messages, onPlayAudio, isPlayingAudio }: ChatHistoryProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
 
   // Auto-scroll to bottom on new messages
@@ -43,6 +45,8 @@ export function ChatHistory({ messages }: ChatHistoryProps) {
             key={message.id} 
             message={message} 
             isLatest={index === messages.length - 1}
+            onPlayAudio={onPlayAudio}
+            isPlayingAudio={isPlayingAudio}
           />
         ))}
       </AnimatePresence>
