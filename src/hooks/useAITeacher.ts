@@ -1,7 +1,7 @@
 import { useState, useCallback } from 'react';
-import { supabase } from '@/integrations/supabase/client';
+import { supabase } from '@/integrations/supabase/safeClient';
+import { BACKEND_PUBLISHABLE_KEY, BACKEND_URL } from '@/lib/backendEnv';
 import { useToast } from '@/hooks/use-toast';
-
 interface Message {
   role: 'user' | 'assistant';
   content: string;
@@ -60,13 +60,13 @@ export function useAITeacher() {
       setIsPlayingAudio(true);
       
       const response = await fetch(
-        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/text-to-speech`,
+        `${BACKEND_URL}/functions/v1/text-to-speech`,
         {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'apikey': import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY,
-            'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
+            'apikey': BACKEND_PUBLISHABLE_KEY,
+            'Authorization': `Bearer ${BACKEND_PUBLISHABLE_KEY}`,
           },
           body: JSON.stringify({ text }),
         }
@@ -93,13 +93,13 @@ export function useAITeacher() {
   const generateImage = useCallback(async (prompt: string) => {
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/generate-image`,
+        `${BACKEND_URL}/functions/v1/generate-image`,
         {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'apikey': import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY,
-            'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
+            'apikey': BACKEND_PUBLISHABLE_KEY,
+            'Authorization': `Bearer ${BACKEND_PUBLISHABLE_KEY}`,
           },
           body: JSON.stringify({ prompt }),
         }
