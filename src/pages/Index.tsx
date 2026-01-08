@@ -75,9 +75,6 @@ const Index = () => {
               <span className="hidden sm:inline ml-1">Tozalash</span>
             </Button>
           )}
-          <Button className="rounded-full px-4 lg:px-8 h-10 lg:h-12 font-bold bg-indigo-600 hover:bg-indigo-700 shadow-lg shadow-indigo-200 transition-all text-sm lg:text-base">
-            Guvohnoma
-          </Button>
         </div>
       </nav>
 
@@ -221,11 +218,6 @@ const Index = () => {
           Sayt siyosati
         </button>
         
-        <div className="text-center sm:text-right">
-          <p className="text-slate-500 text-[10px] font-bold uppercase tracking-[0.1em]">
-            I.I. Sayfiddinov metodikasi • 2026
-          </p>
-        </div>
       </footer>
 
       {/* --- SITE POLICY MODAL --- */}
