@@ -92,10 +92,10 @@ const Index = () => {
             className="mb-4"
           >
             <h1 className="text-2xl lg:text-4xl font-black leading-tight tracking-tighter text-slate-900">
-              Kelajak <span className="text-indigo-600 italic">Shu Yerda!</span>
+              Kelajak <span className="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-500 bg-clip-text text-transparent italic">Shu Yerda!</span>
             </h1>
             <p className="text-sm lg:text-base text-slate-500 font-medium">
-              Jomboy 40-maktab STEAM laboratoriyasi
+              Jomboy tuman 46-maktab STEAM labaratoriyasi
             </p>
           </motion.div>
 
@@ -262,7 +262,7 @@ const Index = () => {
                 <div className="bg-slate-50 rounded-xl p-4">
                   <h3 className="font-bold text-slate-800 mb-1 text-sm">Maqsad</h3>
                   <p className="text-slate-600 leading-relaxed text-sm">
-                    Ushbu platforma Jomboy tumani 40-maktab o'quvchilari uchun STEAM yo'nalishlarini sun'iy intellekt yordamida o'rgatish maqsadida yaratilgan.
+                    Ushbu platforma Samarqand viloyati Jomboy tumani 46-sonli umumta'lim maktabining 7-"B" sinf o'quvchisi, yosh dasturchi Narzikulov Amirxon Anvarovich tomonidan maktab yoshidagi o'quvchilar uchun maxsus ishlab chiqildi.
                   </p>
                 </div>
 
