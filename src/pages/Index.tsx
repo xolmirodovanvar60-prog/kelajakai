@@ -117,6 +117,9 @@ const Index = () => {
               <span className="inline-flex items-center gap-1 bg-purple-50 text-purple-600 px-2 py-0.5 rounded-full text-[10px] font-semibold">
                 🧮 LaTeX formulalar
               </span>
+              <span className="inline-flex items-center gap-1 bg-amber-50 text-amber-600 px-2 py-0.5 rounded-full text-[10px] font-semibold">
+                🌍 Ko'p tilli
+              </span>
             </div>
           </motion.div>
 
@@ -291,22 +294,22 @@ const Index = () => {
                 </div>
 
                 <div className="bg-slate-50 rounded-xl p-4">
-                  <h3 className="font-bold text-slate-800 mb-2 text-sm">Hybrid AI Jamoasi</h3>
+                  <h3 className="font-bold text-slate-800 mb-2 text-sm">Imkoniyatlar</h3>
                   <div className="flex flex-wrap gap-2">
                     <span className="inline-flex items-center gap-1.5 bg-white px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-700 shadow-sm">
-                      <Brain size={14} className="text-blue-500" /> DeepSeek (Fikrlash)
+                      <Brain size={14} className="text-blue-500" /> Sun'iy intellekt
                     </span>
                     <span className="inline-flex items-center gap-1.5 bg-white px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-700 shadow-sm">
-                      <Brain size={14} className="text-green-500" /> OpenAI (Til)
+                      🌍 Ko'p tilli qo'llab-quvvatlash
                     </span>
                     <span className="inline-flex items-center gap-1.5 bg-white px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-700 shadow-sm">
-                      <Sparkles size={14} className="text-amber-500" /> Gemini (Nazorat)
+                      <Volume2 size={14} className="text-emerald-500" /> Ovozli javob
                     </span>
                     <span className="inline-flex items-center gap-1.5 bg-white px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-700 shadow-sm">
-                      <Volume2 size={14} className="text-emerald-500" /> ElevenLabs (Ovoz)
+                      <Palette size={14} className="text-pink-500" /> Rasm yaratish
                     </span>
                     <span className="inline-flex items-center gap-1.5 bg-white px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-700 shadow-sm">
-                      <Palette size={14} className="text-pink-500" /> DALL-E 3 (Tasvir)
+                      📄 Fayl tahlili
                     </span>
                   </div>
                 </div>
