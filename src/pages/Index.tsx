@@ -1,12 +1,14 @@
 import { useState, useRef } from 'react';
 import { 
   GraduationCap, Info, X, ShieldCheck, Send, Image as ImageIcon,
-  Brain, Volume2, Palette, Mic, Loader2, Trash2, VolumeX, Sparkles
+  Brain, Volume2, Palette, Mic, Loader2, Trash2, VolumeX, Sparkles, Eye
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useHybridAITeacher } from '@/hooks/useHybridAITeacher';
+import { useHybridAITeacher, UploadedFile } from '@/hooks/useHybridAITeacher';
 import { ChatHistory } from '@/components/ChatHistory';
+import { FileUploadButton } from '@/components/FileUploadButton';
+import { ExportButton } from '@/components/ExportButton';
 
 const Index = () => {
   const [isPolicyOpen, setIsPolicyOpen] = useState(false);
@@ -19,15 +21,19 @@ const Index = () => {
     currentImage, 
     isPlayingAudio,
     isGeneratingImage,
+    selectedFiles,
     askQuestion,
     clearHistory,
     stopAudio,
     speakResponse,
+    addFiles,
+    removeFile,
   } = useHybridAITeacher();
 
   const handleSubmit = (text?: string) => {
     const query = text || inputText;
-    if (!query.trim() || isProcessing) return;
+    if (!query.trim() && selectedFiles.length === 0) return;
+    if (isProcessing) return;
     askQuestion(query);
     setInputText('');
     inputRef.current?.focus();
@@ -45,6 +51,10 @@ const Index = () => {
     recognition.start();
   };
 
+  const handleFileSelect = (files: UploadedFile[]) => {
+    addFiles(files);
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-indigo-50/30 font-sans text-foreground flex flex-col">
       
@@ -58,12 +68,13 @@ const Index = () => {
             <span className="text-lg lg:text-2xl font-black tracking-tighter text-slate-800">USTOZ.AI</span>
             <div className="flex items-center gap-1 text-[10px] text-slate-400">
               <Sparkles size={10} className="text-amber-500" />
-              <span className="font-bold">Hybrid AI</span>
+              <span className="font-bold">Multimodal AI</span>
             </div>
           </div>
         </div>
         
         <div className="flex items-center gap-2">
+          <ExportButton messages={messages} disabled={isProcessing} />
           {messages.length > 0 && (
             <Button 
               variant="ghost" 
@@ -95,6 +106,18 @@ const Index = () => {
             <p className="text-sm lg:text-base text-slate-500 font-medium">
               Jomboy tuman 46-maktab STEAM labaratoriyasi
             </p>
+            {/* Features indicator */}
+            <div className="flex flex-wrap gap-1.5 mt-2">
+              <span className="inline-flex items-center gap-1 bg-blue-50 text-blue-600 px-2 py-0.5 rounded-full text-[10px] font-semibold">
+                <Eye size={10} /> Rasm tahlili
+              </span>
+              <span className="inline-flex items-center gap-1 bg-emerald-50 text-emerald-600 px-2 py-0.5 rounded-full text-[10px] font-semibold">
+                📄 Hujjat o'qish
+              </span>
+              <span className="inline-flex items-center gap-1 bg-purple-50 text-purple-600 px-2 py-0.5 rounded-full text-[10px] font-semibold">
+                🧮 LaTeX formulalar
+              </span>
+            </div>
           </motion.div>
 
           {/* Chat History */}
@@ -131,15 +154,23 @@ const Index = () => {
           </div>
           
           {/* Input Area */}
-          <div className="mt-4 flex items-center gap-3">
+          <div className="mt-4 flex items-center gap-2">
+            {/* File Upload Button */}
+            <FileUploadButton 
+              onFileSelect={handleFileSelect}
+              selectedFiles={selectedFiles}
+              onRemoveFile={removeFile}
+              disabled={isProcessing}
+            />
+            
             <motion.button 
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={handleVoiceInput}
               disabled={isProcessing}
-              className="w-14 h-14 rounded-full bg-gradient-to-br from-indigo-500 to-indigo-700 flex items-center justify-center text-white shadow-lg shadow-indigo-200 transition-all disabled:opacity-50 flex-shrink-0"
+              className="w-12 h-12 rounded-full bg-gradient-to-br from-indigo-500 to-indigo-700 flex items-center justify-center text-white shadow-lg shadow-indigo-200 transition-all disabled:opacity-50 flex-shrink-0"
             >
-              {isProcessing ? <Loader2 size={22} className="animate-spin" /> : <Mic size={22} />}
+              {isProcessing ? <Loader2 size={20} className="animate-spin" /> : <Mic size={20} />}
             </motion.button>
             
             <div className="flex-1 bg-white/80 backdrop-blur-xl rounded-full p-1.5 flex items-center shadow-lg shadow-slate-100/50 border border-slate-100">
@@ -149,13 +180,13 @@ const Index = () => {
                 value={inputText}
                 onChange={(e) => setInputText(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && handleSubmit()}
-                placeholder="Savol yozing..."
+                placeholder={selectedFiles.length > 0 ? "Fayl haqida savol yozing..." : "Savol yozing..."}
                 disabled={isProcessing}
                 className="flex-1 bg-transparent border-none px-4 py-2.5 font-medium focus:outline-none text-slate-700 placeholder:text-slate-400 disabled:opacity-50"
               />
               <button 
                 onClick={() => handleSubmit()}
-                disabled={isProcessing || !inputText.trim()}
+                disabled={isProcessing || (!inputText.trim() && selectedFiles.length === 0)}
                 className="bg-indigo-600 hover:bg-indigo-700 p-3 rounded-full text-white shadow-lg shadow-indigo-200 transition-all disabled:opacity-50"
               >
                 <Send size={16} />
