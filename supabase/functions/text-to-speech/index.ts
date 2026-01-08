@@ -13,7 +13,9 @@ function isAllowedOrigin(origin: string) {
       host === 'lovableproject.com' ||
       host.endsWith('.lovableproject.com') ||
       host === 'lovable.app' ||
-      host.endsWith('.lovable.app')
+      host.endsWith('.lovable.app') ||
+      host === 'onrender.com' ||
+      host.endsWith('.onrender.com')
     );
   } catch {
     return false;
