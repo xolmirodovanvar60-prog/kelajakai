@@ -99,10 +99,26 @@ serve(async (req) => {
     }
 
     const data = await response.json();
-    const imageData = data.choices?.[0]?.message?.images?.[0]?.image_url?.url;
+    console.log('Gemini response structure:', JSON.stringify(data, null, 2));
+    
+    // Try multiple possible response formats
+    let imageData = data.choices?.[0]?.message?.images?.[0]?.image_url?.url;
+    
+    // Alternative format: images array directly in message
+    if (!imageData && data.choices?.[0]?.message?.images?.[0]?.url) {
+      imageData = data.choices[0].message.images[0].url;
+    }
+    
+    // Alternative: base64 data in content
+    if (!imageData && data.choices?.[0]?.message?.content) {
+      const content = data.choices[0].message.content;
+      if (typeof content === 'string' && content.startsWith('data:image')) {
+        imageData = content;
+      }
+    }
 
     if (!imageData) {
-      console.error('No image in response');
+      console.error('No image in response, structure:', Object.keys(data));
       return new Response(JSON.stringify({ error: 'No image generated' }), {
         status: 500,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
