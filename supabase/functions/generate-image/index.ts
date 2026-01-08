@@ -43,7 +43,6 @@ serve(async (req) => {
   try {
     const { prompt } = await req.json();
     
-    // Input validation
     if (!prompt || typeof prompt !== 'string') {
       return new Response(JSON.stringify({ error: 'Invalid request' }), {
         status: 400,
@@ -51,7 +50,6 @@ serve(async (req) => {
       });
     }
     
-    // Limit prompt length to prevent abuse (max 500 chars)
     const sanitizedPrompt = prompt.slice(0, 500).trim();
     
     if (sanitizedPrompt.length === 0) {
@@ -61,47 +59,59 @@ serve(async (req) => {
       });
     }
 
-    const OPENAI_API_KEY = Deno.env.get('OPENAI_API_KEY');
+    const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
 
-    if (!OPENAI_API_KEY) {
-      console.error('OPENAI_API_KEY is not configured');
+    if (!LOVABLE_API_KEY) {
+      console.error('LOVABLE_API_KEY is not configured');
       return new Response(JSON.stringify({ error: 'Service unavailable' }), {
         status: 500,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       });
     }
 
-    console.log('Generating image for prompt length:', sanitizedPrompt.length);
+    console.log('Generating image with Gemini for prompt:', sanitizedPrompt);
 
-    const response = await fetch('https://api.openai.com/v1/images/generations', {
+    const response = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${OPENAI_API_KEY}`,
+        'Authorization': `Bearer ${LOVABLE_API_KEY}`,
       },
       body: JSON.stringify({
-        model: 'dall-e-3',
-        prompt: `Educational bright illustration for children about: ${sanitizedPrompt}. Style: Colorful, friendly, 3D rendered, suitable for young students. High quality, clean design.`,
-        size: '1024x1024',
-        quality: 'standard',
-        n: 1,
+        model: 'google/gemini-2.5-flash-image-preview',
+        messages: [
+          {
+            role: 'user',
+            content: `Generate a bright, colorful, educational illustration for children about: ${sanitizedPrompt}. Style: Friendly, 3D rendered, suitable for young students. High quality, clean design.`
+          }
+        ],
+        modalities: ['image', 'text']
       }),
     });
 
     if (!response.ok) {
-      console.error('DALL-E API error:', response.status);
-      return new Response(JSON.stringify({ error: 'Service unavailable' }), {
+      const errorText = await response.text();
+      console.error('Gemini API error:', response.status, errorText);
+      return new Response(JSON.stringify({ error: 'Image generation failed' }), {
         status: 500,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       });
     }
 
     const data = await response.json();
-    const imageUrl = data.data[0].url;
+    const imageData = data.choices?.[0]?.message?.images?.[0]?.image_url?.url;
+
+    if (!imageData) {
+      console.error('No image in response');
+      return new Response(JSON.stringify({ error: 'No image generated' }), {
+        status: 500,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
 
     console.log('Image generated successfully');
 
-    return new Response(JSON.stringify({ imageUrl }), {
+    return new Response(JSON.stringify({ imageUrl: imageData }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
   } catch (error) {
