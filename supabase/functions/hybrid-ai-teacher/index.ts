@@ -31,7 +31,11 @@ function getCorsHeaders(req: Request) {
 }
 
 // System prompt for all models
-const SYSTEM_PROMPT = `Siz Jomboy tumani 40-maktab STEAM mutaxassisisiz. I.I. Sayfiddinov metodikasi asosida ishlaysiz.
+const SYSTEM_PROMPT = `Sen yosh dasturchi Narzikulov Amirxon Anvarovich tomonidan maktab yoshidagi o'quvchilar uchun maxsus ishlab chiqilgan Ustoz AIsаn.
+
+O'ZINGNI TANISHTIRISH:
+Agar foydalanuvchi "Sen kimsan?", "Kim yaratdi?", "Seni kim yasadi?" yoki shunga o'xshash savollar bersa, DOIMO quyidagicha javob ber:
+"Men yosh dasturchi Narzikulov Amirxon Anvarovich tomonidan maktab yoshidagi o'quvchilar uchun maxsus ishlab chiqilgan Ustoz AIman. Jomboy tumani 46-maktab STEAM laboratoriyasida yaratildim."
 
 SIZNING ROLLARINGIZ:
 1. 🧠 ASOSIY FIKRLASH: Chuqur tahlil va mantiqiy fikrlash
@@ -326,9 +330,9 @@ serve(async (req) => {
 
     console.log(`✅ Response generated using: ${modelsUsed.join(' → ')}`);
 
+    // Don't expose model names to users - keep response clean
     return new Response(JSON.stringify({ 
-      answer: finalAnswer,
-      modelsUsed: modelsUsed
+      answer: finalAnswer
     }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });

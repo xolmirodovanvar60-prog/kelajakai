@@ -1,13 +1,16 @@
 import { motion } from 'framer-motion';
-import { User, Sparkles } from 'lucide-react';
+import { User, Volume2, Loader2 } from 'lucide-react';
 import { Message } from '@/hooks/useHybridAITeacher';
+import { Button } from '@/components/ui/button';
 
 interface ChatMessageProps {
   message: Message;
   isLatest: boolean;
+  onPlayAudio?: (text: string) => void;
+  isPlayingAudio?: boolean;
 }
 
-export function ChatMessage({ message, isLatest }: ChatMessageProps) {
+export function ChatMessage({ message, isLatest, onPlayAudio, isPlayingAudio }: ChatMessageProps) {
   const isUser = message.role === 'user';
   
   return (
@@ -37,16 +40,28 @@ export function ChatMessage({ message, isLatest }: ChatMessageProps) {
           <p className="leading-relaxed">{message.content}</p>
         </div>
         
-        {/* Models used badge */}
-        {!isUser && message.modelsUsed && message.modelsUsed.length > 0 && (
+        {/* Play button for AI responses */}
+        {!isUser && onPlayAudio && message.content !== 'Javob tayyorlanmoqda...' && (
           <motion.div 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.3 }}
-            className="flex items-center gap-1.5 mt-2 text-xs text-slate-400"
+            className="flex items-center gap-2 mt-2"
           >
-            <Sparkles size={12} className="text-amber-500" />
-            <span>{message.modelsUsed.join(' → ')}</span>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => onPlayAudio(message.content)}
+              disabled={isPlayingAudio}
+              className="h-7 px-2 text-xs text-indigo-600 hover:text-indigo-700 hover:bg-indigo-50"
+            >
+              {isPlayingAudio ? (
+                <Loader2 size={14} className="animate-spin mr-1" />
+              ) : (
+                <Volume2 size={14} className="mr-1" />
+              )}
+              Tinglash
+            </Button>
           </motion.div>
         )}
         
