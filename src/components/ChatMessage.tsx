@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { User, Bot, Sparkles } from 'lucide-react';
+import { User, Sparkles } from 'lucide-react';
 import { Message } from '@/hooks/useHybridAITeacher';
 
 interface ChatMessageProps {
@@ -20,9 +20,11 @@ export function ChatMessage({ message, isLatest }: ChatMessageProps) {
       <div className={`flex-shrink-0 w-10 h-10 rounded-2xl flex items-center justify-center ${
         isUser 
           ? 'bg-indigo-100 text-indigo-600' 
-          : 'bg-gradient-to-br from-emerald-500 to-teal-600 text-white'
+          : 'bg-gradient-to-br from-indigo-600 to-violet-600 text-white shadow-lg shadow-indigo-200'
       }`}>
-        {isUser ? <User size={18} /> : <Bot size={18} />}
+        {isUser ? <User size={18} /> : (
+          <span className="text-xs font-black tracking-tight">UAI</span>
+        )}
       </div>
       
       {/* Message Content */}

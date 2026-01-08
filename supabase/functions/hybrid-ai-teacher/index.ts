@@ -206,41 +206,93 @@ serve(async (req) => {
 
     const lastUserMessage = validatedMessages.filter(m => m.role === 'user').pop()?.content || '';
     
-    let finalAnswer: string;
+    let finalAnswer: string | undefined;
     const modelsUsed: string[] = [];
 
-    // HYBRID ORCHESTRATION
+    // HYBRID ORCHESTRATION - with fallback support
     if (hasDeepSeek && hasOpenAI && hasGemini) {
-      // Full hybrid mode: DeepSeek → OpenAI → Gemini
-      console.log('🚀 Running full hybrid orchestration...');
+      // Try full hybrid mode: DeepSeek → OpenAI → Gemini
+      console.log('🚀 Attempting full hybrid orchestration...');
       
-      // Step 1: DeepSeek for primary reasoning
-      const deepSeekAnswer = await callDeepSeek(validatedMessages, DEEPSEEK_API_KEY);
-      modelsUsed.push('DeepSeek');
+      try {
+        // Step 1: DeepSeek for primary reasoning
+        const deepSeekAnswer = await callDeepSeek(validatedMessages, DEEPSEEK_API_KEY);
+        modelsUsed.push('DeepSeek');
+        
+        // Step 2: OpenAI for linguistic refinement
+        const refinedAnswer = await callOpenAI(deepSeekAnswer, OPENAI_API_KEY);
+        modelsUsed.push('OpenAI');
+        
+        // Step 3: Gemini for final quality control
+        finalAnswer = await callGemini(lastUserMessage, refinedAnswer, GEMINI_API_KEY);
+        modelsUsed.push('Gemini');
+      } catch (deepSeekErr) {
+        console.warn('DeepSeek failed, falling back to OpenAI + Gemini:', deepSeekErr);
+        // Continue to fallback below
+      }
+    }
+    
+    // Fallback: OpenAI + Gemini if DeepSeek failed or not available
+    if (!finalAnswer && hasOpenAI && hasGemini) {
+      console.log('🔄 Running OpenAI + Gemini fallback...');
       
-      // Step 2: OpenAI for linguistic refinement
-      const refinedAnswer = await callOpenAI(deepSeekAnswer, OPENAI_API_KEY);
+      const response = await fetch('https://api.openai.com/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${OPENAI_API_KEY}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          model: 'gpt-4o-mini',
+          messages: [
+            { role: 'system', content: SYSTEM_PROMPT },
+            ...validatedMessages
+          ],
+          max_tokens: 800,
+          temperature: 0.7,
+        }),
+      });
+
+      if (!response.ok) throw new Error('OpenAI API error');
+      const data = await response.json();
+      const openAIAnswer = data.choices[0].message.content;
+      modelsUsed.length = 0; // Clear previous attempts
       modelsUsed.push('OpenAI');
       
-      // Step 3: Gemini for final quality control
-      finalAnswer = await callGemini(lastUserMessage, refinedAnswer, GEMINI_API_KEY);
+      // Gemini for quality control
+      finalAnswer = await callGemini(lastUserMessage, openAIAnswer, GEMINI_API_KEY);
       modelsUsed.push('Gemini');
       
-    } else if (hasDeepSeek && hasOpenAI) {
-      // DeepSeek + OpenAI mode
-      console.log('🔄 Running DeepSeek + OpenAI mode...');
-      const deepSeekAnswer = await callDeepSeek(validatedMessages, DEEPSEEK_API_KEY);
-      modelsUsed.push('DeepSeek');
-      finalAnswer = await callOpenAI(deepSeekAnswer, OPENAI_API_KEY);
+    } else if (!finalAnswer && hasOpenAI) {
+      // OpenAI only (fallback)
+      console.log('📝 Running OpenAI only mode...');
+      const response = await fetch('https://api.openai.com/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${OPENAI_API_KEY}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          model: 'gpt-4o-mini',
+          messages: [
+            { role: 'system', content: SYSTEM_PROMPT },
+            ...validatedMessages
+          ],
+          max_tokens: 800,
+          temperature: 0.7,
+        }),
+      });
+
+      if (!response.ok) throw new Error('OpenAI API error');
+      const data = await response.json();
+      finalAnswer = data.choices[0].message.content;
       modelsUsed.push('OpenAI');
       
-    } else if (hasDeepSeek) {
+    } else if (!finalAnswer && hasDeepSeek) {
       // DeepSeek only
       console.log('🧠 Running DeepSeek only mode...');
       finalAnswer = await callDeepSeek(validatedMessages, DEEPSEEK_API_KEY);
       modelsUsed.push('DeepSeek');
-      
-    } else if (hasOpenAI) {
       // OpenAI only (fallback)
       console.log('📝 Running OpenAI only mode...');
       const response = await fetch('https://api.openai.com/v1/chat/completions', {
