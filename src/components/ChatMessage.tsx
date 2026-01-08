@@ -1,7 +1,8 @@
 import { motion } from 'framer-motion';
-import { User, Volume2, Loader2 } from 'lucide-react';
+import { User, Volume2, Loader2, Paperclip, FileText, Image as ImageIcon } from 'lucide-react';
 import { Message } from '@/hooks/useHybridAITeacher';
 import { Button } from '@/components/ui/button';
+import { MarkdownRenderer } from '@/components/MarkdownRenderer';
 
 interface ChatMessageProps {
   message: Message;
@@ -12,6 +13,7 @@ interface ChatMessageProps {
 
 export function ChatMessage({ message, isLatest, onPlayAudio, isPlayingAudio }: ChatMessageProps) {
   const isUser = message.role === 'user';
+  const isLoading = message.content === 'Javob tayyorlanmoqda...';
   
   return (
     <motion.div
@@ -32,16 +34,37 @@ export function ChatMessage({ message, isLatest, onPlayAudio, isPlayingAudio }: 
       
       {/* Message Content */}
       <div className={`flex-1 max-w-[80%] ${isUser ? 'text-right' : ''}`}>
+        {/* Attachments indicator for user messages */}
+        {isUser && message.attachments && message.attachments.length > 0 && (
+          <div className={`flex gap-1.5 mb-1.5 ${isUser ? 'justify-end' : ''}`}>
+            {message.attachments.map((att, i) => (
+              <span key={i} className="inline-flex items-center gap-1 bg-indigo-100 text-indigo-600 px-2 py-0.5 rounded-full text-[10px] font-medium">
+                {att.type === 'image' ? <ImageIcon size={10} /> : <FileText size={10} />}
+                {att.name.length > 15 ? att.name.slice(0, 12) + '...' : att.name}
+              </span>
+            ))}
+          </div>
+        )}
+        
         <div className={`inline-block rounded-2xl px-5 py-3 ${
           isUser 
             ? 'bg-indigo-600 text-white rounded-tr-none' 
             : 'bg-white/80 backdrop-blur-sm text-slate-700 rounded-tl-none shadow-sm border border-slate-100'
         }`}>
-          <p className="leading-relaxed">{message.content}</p>
+          {isLoading ? (
+            <div className="flex items-center gap-2">
+              <Loader2 size={16} className="animate-spin" />
+              <span>Javob tayyorlanmoqda...</span>
+            </div>
+          ) : isUser ? (
+            <p className="leading-relaxed">{message.content}</p>
+          ) : (
+            <MarkdownRenderer content={message.content} />
+          )}
         </div>
         
         {/* Play button for AI responses */}
-        {!isUser && onPlayAudio && message.content !== 'Javob tayyorlanmoqda...' && (
+        {!isUser && onPlayAudio && !isLoading && (
           <motion.div 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
