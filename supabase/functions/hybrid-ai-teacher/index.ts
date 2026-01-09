@@ -307,29 +307,32 @@ serve(async (req) => {
       console.log('🧠 Running DeepSeek only mode...');
       finalAnswer = await callDeepSeek(validatedMessages, DEEPSEEK_API_KEY);
       modelsUsed.push('DeepSeek');
-      // OpenAI only (fallback)
-      console.log('📝 Running OpenAI only mode...');
-      const response = await fetch('https://api.openai.com/v1/chat/completions', {
+      
+    } else if (!finalAnswer && hasGemini) {
+      // Gemini only fallback
+      console.log('🎯 Running Gemini only mode...');
+      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`, {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${OPENAI_API_KEY}`,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          model: 'gpt-4o-mini',
-          messages: [
-            { role: 'system', content: SYSTEM_PROMPT },
-            ...validatedMessages
-          ],
-          max_tokens: 800,
-          temperature: 0.7,
+          contents: [{
+            parts: [{
+              text: `${SYSTEM_PROMPT}\n\nSavol: ${lastUserMessage}`
+            }]
+          }],
+          generationConfig: {
+            temperature: 0.7,
+            maxOutputTokens: 800,
+          }
         }),
       });
 
-      if (!response.ok) throw new Error('OpenAI API error');
+      if (!response.ok) throw new Error('Gemini API error');
       const data = await response.json();
-      finalAnswer = data.choices[0].message.content;
-      modelsUsed.push('OpenAI');
+      finalAnswer = data.candidates?.[0]?.content?.parts?.[0]?.text;
+      modelsUsed.push('Gemini');
       
     } else {
       return new Response(JSON.stringify({ error: 'No AI API keys configured' }), {
