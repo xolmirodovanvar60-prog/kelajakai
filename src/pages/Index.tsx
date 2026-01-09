@@ -1,7 +1,7 @@
 import { useState, useRef } from 'react';
 import { 
   GraduationCap, Info, X, ShieldCheck, Send, Image as ImageIcon,
-  Brain, Volume2, Palette, Mic, Loader2, Trash2, VolumeX, Sparkles, Eye
+  Brain, Volume2, Palette, Mic, Loader2, Trash2, VolumeX, Sparkles, Eye, AlertTriangle
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -9,10 +9,18 @@ import { useHybridAITeacher, UploadedFile } from '@/hooks/useHybridAITeacher';
 import { ChatHistory } from '@/components/ChatHistory';
 import { FileUploadButton } from '@/components/FileUploadButton';
 import { ExportButton } from '@/components/ExportButton';
+import { useSecurityProtection } from '@/hooks/useSecurityProtection';
+import { useRateLimiter } from '@/hooks/useRateLimiter';
+import { toast } from 'sonner';
 
 const Index = () => {
   const [isPolicyOpen, setIsPolicyOpen] = useState(false);
   const [inputText, setInputText] = useState('');
+  const [honeypotValue, setHoneypotValue] = useState(''); // Bot detection
+  
+  // Xavfsizlik va rate limiting
+  useSecurityProtection();
+  const { isBlocked, remainingRequests, checkRateLimit } = useRateLimiter({ maxRequests: 5, windowMs: 60000 });
   const inputRef = useRef<HTMLInputElement>(null);
   
   const { 
@@ -31,9 +39,24 @@ const Index = () => {
   } = useHybridAITeacher();
 
   const handleSubmit = (text?: string) => {
+    // Honeypot tekshirish - bot aniqlash
+    if (honeypotValue) {
+      console.log('Bot detected');
+      return;
+    }
+    
     const query = text || inputText;
     if (!query.trim() && selectedFiles.length === 0) return;
     if (isProcessing) return;
+    
+    // Rate limit tekshirish
+    if (!checkRateLimit()) {
+      toast.error('So\'rov limiti oshdi. Iltimos, 1 daqiqa kuting.', {
+        icon: <AlertTriangle className="text-amber-500" />,
+      });
+      return;
+    }
+    
     askQuestion(query);
     setInputText('');
     inputRef.current?.focus();
@@ -176,7 +199,19 @@ const Index = () => {
               {isProcessing ? <Loader2 size={20} className="animate-spin" /> : <Mic size={20} />}
             </motion.button>
             
-            <div className="flex-1 bg-white/80 backdrop-blur-xl rounded-full p-1.5 flex items-center shadow-lg shadow-slate-100/50 border border-slate-100">
+            <div className="flex-1 bg-white/80 backdrop-blur-xl rounded-full p-1.5 flex items-center shadow-lg shadow-slate-100/50 border border-slate-100 relative">
+              {/* Honeypot field - botlar uchun tuzoq */}
+              <input 
+                type="text"
+                name="website"
+                value={honeypotValue}
+                onChange={(e) => setHoneypotValue(e.target.value)}
+                className="absolute -left-[9999px] w-0 h-0 opacity-0 pointer-events-none"
+                tabIndex={-1}
+                autoComplete="off"
+                aria-hidden="true"
+              />
+              
               <input 
                 ref={inputRef}
                 type="text"
@@ -184,12 +219,20 @@ const Index = () => {
                 onChange={(e) => setInputText(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && handleSubmit()}
                 placeholder={selectedFiles.length > 0 ? "Fayl haqida savol yozing..." : "Savol yozing..."}
-                disabled={isProcessing}
+                disabled={isProcessing || isBlocked}
                 className="flex-1 bg-transparent border-none px-4 py-2.5 font-medium focus:outline-none text-slate-700 placeholder:text-slate-400 disabled:opacity-50"
               />
+              
+              {/* Rate limit indikatori */}
+              {remainingRequests < 5 && (
+                <span className="text-[10px] text-slate-400 mr-2 font-medium">
+                  {remainingRequests}/5
+                </span>
+              )}
+              
               <button 
                 onClick={() => handleSubmit()}
-                disabled={isProcessing || (!inputText.trim() && selectedFiles.length === 0)}
+                disabled={isProcessing || isBlocked || (!inputText.trim() && selectedFiles.length === 0)}
                 className="bg-indigo-600 hover:bg-indigo-700 p-3 rounded-full text-white shadow-lg shadow-indigo-200 transition-all disabled:opacity-50"
               >
                 <Send size={16} />
@@ -318,6 +361,17 @@ const Index = () => {
                   <h3 className="font-bold text-slate-800 mb-1 text-sm">Xavfsizlik</h3>
                   <p className="text-slate-600 leading-relaxed text-sm">
                     Barcha savollar faqat ta'lim sifatini oshirish uchun foydalaniladi. Ma'lumotlar maxfiy saqlanadi.
+                  </p>
+                </div>
+                
+                <div className="bg-red-50 rounded-xl p-4 border border-red-100">
+                  <h3 className="font-bold text-red-700 mb-1 text-sm flex items-center gap-2">
+                    <ShieldCheck size={14} />
+                    Mualliflik huquqi
+                  </h3>
+                  <p className="text-red-600 leading-relaxed text-sm">
+                    Barcha huquqlar himoyalangan. Platforma kodi va kontentidan ruxsatsiz foydalanish, nusxa ko'chirish yoki tarqatish qat'iyan taqiqlanadi. 
+                    © 2024 Narzikulov Amirxon Anvarovich. Barcha huquqlar himoyalangan.
                   </p>
                 </div>
               </div>
