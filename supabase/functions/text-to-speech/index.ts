@@ -1,38 +1,6 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { getCorsHeaders } from "../_shared/cors.ts";
 
-const ALLOWED_HOSTS = new Set(['localhost', '127.0.0.1']);
-
-function isAllowedOrigin(origin: string) {
-  try {
-    const url = new URL(origin);
-    const host = url.hostname;
-
-    if (ALLOWED_HOSTS.has(host)) return true;
-
-    return (
-      host === 'lovableproject.com' ||
-      host.endsWith('.lovableproject.com') ||
-      host === 'lovable.app' ||
-      host.endsWith('.lovable.app') ||
-      host === 'onrender.com' ||
-      host.endsWith('.onrender.com')
-    );
-  } catch {
-    return false;
-  }
-}
-
-function getCorsHeaders(req: Request) {
-  const origin = req.headers.get('origin') ?? '';
-  const allowedOrigin = origin && isAllowedOrigin(origin) ? origin : 'null';
-
-  return {
-    'Access-Control-Allow-Origin': allowedOrigin,
-    'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
-    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-    'Vary': 'Origin',
-  };
-}
 
 serve(async (req) => {
   const corsHeaders = getCorsHeaders(req);
