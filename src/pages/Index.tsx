@@ -42,55 +42,24 @@ const Index = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   return (
-    <div className="min-h-screen bg-background text-foreground font-sans overflow-x-hidden">
-      {/* Animated background elements */}
-      <div className="fixed inset-0 pointer-events-none">
-        {/* Grid pattern */}
-        <div className="absolute inset-0 opacity-[0.03]">
-          <div className="absolute inset-0 grid-lines" />
-        </div>
-        
-        {/* Gradient orbs */}
-        <motion.div
-          className="absolute top-1/4 -left-32 w-96 h-96 rounded-full"
-          style={{
-            background: "radial-gradient(circle, hsl(180 100% 50% / 0.1) 0%, transparent 70%)",
-          }}
-          animate={{
-            scale: [1, 1.2, 1],
-            opacity: [0.3, 0.5, 0.3],
-          }}
-          transition={{ duration: 8, repeat: Infinity }}
-        />
-        <motion.div
-          className="absolute bottom-1/4 -right-32 w-96 h-96 rounded-full"
-          style={{
-            background: "radial-gradient(circle, hsl(280 100% 60% / 0.08) 0%, transparent 70%)",
-          }}
-          animate={{
-            scale: [1.2, 1, 1.2],
-            opacity: [0.3, 0.5, 0.3],
-          }}
-          transition={{ duration: 8, repeat: Infinity }}
-        />
-      </div>
+    <div className="min-h-screen bg-white text-slate-800 font-sans overflow-x-hidden">
 
       {/* HEADER */}
       <header className="relative z-50 flex justify-between items-center px-6 md:px-10 lg:px-16 py-5 
-                         border-b border-primary/20 backdrop-blur-sm bg-background/50">
+                         border-b border-slate-100 bg-white">
         {/* Logo */}
         <motion.div
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           className="flex items-center gap-3"
         >
-          <div className="w-10 h-10 rounded-xl bg-primary/20 flex items-center justify-center
-                          border border-primary/30 shadow-[0_0_20px_rgba(0,217,255,0.3)]">
-            <Globe className="w-5 h-5 text-primary" />
+          <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center
+                          border border-blue-100">
+            <Globe className="w-5 h-5 text-blue-600" />
           </div>
           <h1 className="text-xl md:text-2xl font-bold tracking-wider">
-            <span className="text-primary neon-text">KELAJAK</span>
-            <span className="text-foreground">.UZ</span>
+            <span className="text-blue-600">KELAJAK</span>
+            <span className="text-slate-800">.UZ</span>
           </h1>
         </motion.div>
 
@@ -98,27 +67,27 @@ const Index = () => {
         <motion.nav
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
-          className="hidden md:flex items-center space-x-8 text-sm text-muted-foreground"
+          className="hidden md:flex items-center space-x-8 text-sm text-slate-600"
         >
           {["Bosh sahifa", "Xizmatlar", "Biz haqimizda", "Aloqa"].map((item, i) => (
             <motion.a
               key={item}
               href="#"
-              className="relative hover:text-primary transition-colors duration-300 py-2 group"
+              className="relative hover:text-blue-600 transition-colors duration-300 py-2 group"
               whileHover={{ y: -2 }}
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 * i }}
             >
               {item}
-              <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-primary transition-all duration-300 group-hover:w-full" />
+              <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-blue-600 transition-all duration-300 group-hover:w-full" />
             </motion.a>
           ))}
         </motion.nav>
 
         {/* Mobile menu button */}
         <button 
-          className="md:hidden p-2 text-primary"
+          className="md:hidden p-2 text-blue-600"
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
         >
           {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -129,14 +98,14 @@ const Index = () => {
           <motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="absolute top-full left-0 right-0 bg-card/95 backdrop-blur-xl border-b border-primary/20 md:hidden"
+            className="absolute top-full left-0 right-0 bg-white border-b border-slate-100 shadow-lg md:hidden"
           >
             <nav className="flex flex-col p-4 space-y-3">
               {["Bosh sahifa", "Xizmatlar", "Biz haqimizda", "Aloqa"].map((item) => (
                 <a
                   key={item}
                   href="#"
-                  className="text-muted-foreground hover:text-primary transition-colors py-2 px-4 rounded-lg hover:bg-primary/10"
+                  className="text-slate-600 hover:text-blue-600 transition-colors py-2 px-4 rounded-lg hover:bg-blue-50"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   {item}
@@ -147,22 +116,17 @@ const Index = () => {
         )}
       </header>
 
-      {/* Glowing divider line */}
-      <div className="relative h-[1px] bg-gradient-to-r from-transparent via-primary/50 to-transparent">
-        <div className="absolute inset-0 blur-sm bg-gradient-to-r from-transparent via-primary to-transparent" />
-      </div>
-
       {/* HERO SECTION */}
-      <section className="relative px-6 md:px-10 lg:px-16 pt-16 pb-8 md:pt-24 md:pb-12 text-center">
+      <section className="relative px-6 md:px-10 lg:px-16 pt-16 pb-8 md:pt-24 md:pb-12 text-center bg-[#F8F9FB]">
         {/* Badge */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           className="inline-flex items-center gap-2 px-4 py-2 rounded-full 
-                     bg-primary/10 border border-primary/30 mb-8"
+                     bg-blue-50 border border-blue-100 mb-8"
         >
-          <Sparkles className="w-4 h-4 text-primary" />
-          <span className="text-sm text-primary font-medium">Innovatsiya va texnologiya</span>
+          <Sparkles className="w-4 h-4 text-blue-600" />
+          <span className="text-sm text-blue-600 font-medium">Innovatsiya va texnologiya</span>
         </motion.div>
 
         {/* Hero Title */}
@@ -172,16 +136,16 @@ const Index = () => {
           transition={{ delay: 0.1 }}
           className="text-3xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight"
         >
-          <span className="text-foreground">Kelajak texnologiyalari</span>
+          <span className="text-slate-800">Kelajak texnologiyalari</span>
           <br />
-          <span className="text-primary neon-text">bugundan boshlanadi</span>
+          <span className="text-blue-600">bugundan boshlanadi</span>
         </motion.h2>
 
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="text-muted-foreground max-w-2xl mx-auto mb-12 text-base md:text-lg"
+          className="text-slate-500 max-w-2xl mx-auto mb-12 text-base md:text-lg"
         >
           Sun'iy intellekt, raqamli yechimlar va global innovatsiyalar platformasi. 
           Bizning texnologiyalarimiz bilan kelajakka qadam qo'ying.
@@ -195,21 +159,21 @@ const Index = () => {
           className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16"
         >
           <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="px-8 py-3 rounded-xl bg-primary text-primary-foreground font-semibold
-                       flex items-center gap-2 shadow-[0_0_30px_rgba(0,217,255,0.4)]
-                       hover:shadow-[0_0_40px_rgba(0,217,255,0.6)] transition-shadow"
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            className="px-8 py-3 rounded-lg bg-blue-600 text-white font-semibold
+                       flex items-center gap-2 shadow-[0_4px_14px_rgba(37,99,235,0.3)]
+                       hover:bg-blue-700 hover:shadow-[0_6px_20px_rgba(37,99,235,0.4)] transition-all"
           >
             <Zap className="w-5 h-5" />
             Boshlash
             <ChevronRight className="w-4 h-4" />
           </motion.button>
           <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="px-8 py-3 rounded-xl border border-primary/50 text-primary font-semibold
-                       hover:bg-primary/10 transition-colors"
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            className="px-8 py-3 rounded-lg border border-slate-300 text-slate-700 font-semibold
+                       hover:border-blue-600 hover:text-blue-600 transition-colors"
           >
             Ko'proq bilish
           </motion.button>
@@ -220,21 +184,20 @@ const Index = () => {
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.4, duration: 0.8 }}
-          className="relative mx-auto max-w-6xl h-[300px] md:h-[400px] lg:h-[450px] rounded-3xl 
-                     bg-gradient-to-br from-primary/5 via-card/50 to-neon-purple/5
-                     border border-primary/30 backdrop-blur-xl overflow-hidden
-                     shadow-[0_0_80px_rgba(0,217,255,0.15)]"
+          className="relative mx-auto max-w-6xl h-[300px] md:h-[400px] lg:h-[450px] rounded-2xl 
+                     bg-white border border-slate-200 overflow-hidden
+                     shadow-[0_4px_30px_rgba(0,0,0,0.08)]"
         >
           <WorldMap />
           
           {/* Map label */}
           <div className="absolute bottom-4 left-4 flex items-center gap-2 px-3 py-1.5 
-                          rounded-full bg-background/80 border border-primary/30 backdrop-blur-sm">
-            <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-            <span className="text-xs text-muted-foreground">Global Network</span>
+                          rounded-full bg-white border border-slate-200 shadow-sm">
+            <span className="w-2 h-2 rounded-full bg-blue-600 animate-pulse" />
+            <span className="text-xs text-slate-600">Global Network</span>
           </div>
           
-          <div className="absolute bottom-4 right-4 text-xs text-muted-foreground/50">
+          <div className="absolute bottom-4 right-4 text-xs text-slate-400">
             Real-time connections
           </div>
         </motion.div>
@@ -300,7 +263,7 @@ const Index = () => {
       </section>
 
       {/* ABOUT SECTION */}
-      <section className="relative px-6 md:px-10 lg:px-16 py-16 md:py-24">
+      <section className="relative px-6 md:px-10 lg:px-16 py-16 md:py-24 bg-white">
         <div className="max-w-6xl mx-auto">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             {/* Left content */}
@@ -310,10 +273,10 @@ const Index = () => {
               viewport={{ once: true }}
             >
               <h3 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-6">
-                <span className="text-foreground">Texnologiya bilan</span><br />
-                <span className="text-primary">kelajakni quramiz</span>
+                <span className="text-slate-800">Texnologiya bilan</span><br />
+                <span className="text-blue-600">kelajakni quramiz</span>
               </h3>
-              <p className="text-muted-foreground mb-6 leading-relaxed">
+              <p className="text-slate-500 mb-6 leading-relaxed">
                 Biz innovatsion texnologiyalar va sun'iy intellekt yechimlarini 
                 ishlab chiqish orqali O'zbekistonda raqamli kelajakni shakllantirishga 
                 hissa qo'shmoqdamiz.
@@ -331,9 +294,9 @@ const Index = () => {
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true }}
                     transition={{ delay: i * 0.1 }}
-                    className="flex items-center gap-3 text-muted-foreground"
+                    className="flex items-center gap-3 text-slate-600"
                   >
-                    <span className="w-2 h-2 rounded-full bg-primary shadow-[0_0_10px_rgba(0,217,255,0.5)]" />
+                    <span className="w-2 h-2 rounded-full bg-blue-600" />
                     {item}
                   </motion.li>
                 ))}
@@ -347,8 +310,7 @@ const Index = () => {
               viewport={{ once: true }}
               className="relative"
             >
-              <div className="relative p-8 rounded-3xl bg-gradient-to-br from-primary/10 via-card/50 to-neon-purple/5
-                              border border-primary/30 backdrop-blur-xl">
+              <div className="relative p-8 rounded-2xl bg-[#F8F9FB] border border-slate-200 shadow-[0_4px_20px_rgba(0,0,0,0.06)]">
                 {/* Stats grid */}
                 <div className="grid grid-cols-2 gap-6">
                   {[
@@ -363,19 +325,15 @@ const Index = () => {
                       whileInView={{ opacity: 1, scale: 1 }}
                       viewport={{ once: true }}
                       transition={{ delay: i * 0.1 }}
-                      className="text-center p-4 rounded-2xl bg-background/50 border border-primary/20"
+                      className="text-center p-4 rounded-xl bg-white border border-slate-100 shadow-sm"
                     >
-                      <div className="text-3xl md:text-4xl font-bold text-primary mb-1">
+                      <div className="text-3xl md:text-4xl font-bold text-blue-600 mb-1">
                         {stat.value}
                       </div>
-                      <div className="text-sm text-muted-foreground">{stat.label}</div>
+                      <div className="text-sm text-slate-500">{stat.label}</div>
                     </motion.div>
                   ))}
                 </div>
-
-                {/* Decorative elements */}
-                <div className="absolute -top-3 -right-3 w-6 h-6 border-t-2 border-r-2 border-primary/50" />
-                <div className="absolute -bottom-3 -left-3 w-6 h-6 border-b-2 border-l-2 border-primary/50" />
               </div>
             </motion.div>
           </div>
@@ -383,23 +341,23 @@ const Index = () => {
       </section>
 
       {/* FOOTER */}
-      <footer className="relative border-t border-primary/20 bg-card/30 backdrop-blur-sm">
+      <footer className="relative border-t border-slate-200 bg-[#F8F9FB]">
         <div className="px-6 md:px-10 lg:px-16 py-12">
           <div className="max-w-6xl mx-auto">
             <div className="grid md:grid-cols-4 gap-8 mb-8">
               {/* Brand */}
               <div className="md:col-span-2">
                 <div className="flex items-center gap-3 mb-4">
-                  <div className="w-10 h-10 rounded-xl bg-primary/20 flex items-center justify-center
-                                  border border-primary/30">
-                    <Globe className="w-5 h-5 text-primary" />
+                  <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center
+                                  border border-blue-100">
+                    <Globe className="w-5 h-5 text-blue-600" />
                   </div>
                   <h4 className="text-xl font-bold">
-                    <span className="text-primary">KELAJAK</span>
-                    <span className="text-foreground">.UZ</span>
+                    <span className="text-blue-600">KELAJAK</span>
+                    <span className="text-slate-800">.UZ</span>
                   </h4>
                 </div>
-                <p className="text-sm text-muted-foreground max-w-sm">
+                <p className="text-sm text-slate-500 max-w-sm">
                   Sun'iy intellekt va innovatsion texnologiyalar bilan 
                   O'zbekistonda raqamli kelajakni quramiz.
                 </p>
@@ -407,11 +365,11 @@ const Index = () => {
 
               {/* Links */}
               <div>
-                <h5 className="font-semibold mb-4 text-foreground">Sahifalar</h5>
-                <ul className="space-y-2 text-sm text-muted-foreground">
+                <h5 className="font-semibold mb-4 text-slate-800">Sahifalar</h5>
+                <ul className="space-y-2 text-sm text-slate-500">
                   {["Bosh sahifa", "Xizmatlar", "Biz haqimizda", "Aloqa"].map((item) => (
                     <li key={item}>
-                      <a href="#" className="hover:text-primary transition-colors">{item}</a>
+                      <a href="#" className="hover:text-blue-600 transition-colors">{item}</a>
                     </li>
                   ))}
                 </ul>
@@ -419,8 +377,8 @@ const Index = () => {
 
               {/* Contact */}
               <div>
-                <h5 className="font-semibold mb-4 text-foreground">Aloqa</h5>
-                <ul className="space-y-2 text-sm text-muted-foreground">
+                <h5 className="font-semibold mb-4 text-slate-800">Aloqa</h5>
+                <ul className="space-y-2 text-sm text-slate-500">
                   <li>info@kelajak.uz</li>
                   <li>+998 XX XXX XX XX</li>
                   <li>Toshkent, O'zbekiston</li>
@@ -429,19 +387,19 @@ const Index = () => {
             </div>
 
             {/* Bottom bar */}
-            <div className="pt-8 border-t border-primary/10 flex flex-col md:flex-row justify-between items-center gap-4">
-              <p className="text-sm text-muted-foreground">
+            <div className="pt-8 border-t border-slate-200 flex flex-col md:flex-row justify-between items-center gap-4">
+              <p className="text-sm text-slate-500">
                 © 2026 KELAJAK.UZ — Barcha huquqlar himoyalangan
               </p>
-              <p className="text-xs text-muted-foreground/50">
+              <p className="text-xs text-slate-400">
                 Yaratuvchi: Narzikulov Amirxon Anvarovich
               </p>
             </div>
           </div>
         </div>
 
-        {/* Gradient line at bottom */}
-        <div className="h-1 bg-gradient-to-r from-primary via-neon-purple to-accent" />
+        {/* Simple accent line at bottom */}
+        <div className="h-1 bg-blue-600" />
       </footer>
     </div>
   );
