@@ -23,11 +23,21 @@ export function ChatHistory({ messages, onPlayAudio, isPlayingAudio }: ChatHisto
   if (messages.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center h-full text-center p-8">
-        <div className="w-16 h-16 rounded-3xl bg-slate-100 flex items-center justify-center mb-4">
-          <MessageSquare size={28} className="text-slate-400" />
-        </div>
-        <h3 className="text-lg font-bold text-slate-600 mb-2">Suhbat boshlang!</h3>
-        <p className="text-slate-400 text-sm max-w-xs">
+        <motion.div 
+          className="w-16 h-16 rounded-3xl bg-gradient-to-br from-primary/20 to-secondary/20 border border-primary/30 flex items-center justify-center mb-4"
+          animate={{
+            boxShadow: [
+              '0 0 10px hsl(180 100% 50% / 0.2)',
+              '0 0 20px hsl(180 100% 50% / 0.4)',
+              '0 0 10px hsl(180 100% 50% / 0.2)'
+            ]
+          }}
+          transition={{ duration: 3, repeat: Infinity }}
+        >
+          <MessageSquare size={28} className="text-primary" />
+        </motion.div>
+        <h3 className="text-lg font-bold text-foreground mb-2">Suhbat boshlang!</h3>
+        <p className="text-muted-foreground text-sm max-w-xs">
           Savol bering va AI ustoz sizga o'zbek tilida javob beradi
         </p>
       </div>
