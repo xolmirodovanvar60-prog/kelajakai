@@ -241,31 +241,45 @@ const Index = () => {
       </section>
 
       {/* FEATURES SECTION */}
-      <section className="relative px-6 md:px-10 lg:px-16 py-16 md:py-24">
+      <section id="xizmatlar" className="relative px-6 md:px-10 lg:px-16 py-20 md:py-28">
+        {/* Background gradient accent */}
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-primary/[0.02] to-transparent pointer-events-none" />
+        
         {/* Section header */}
-        <div className="text-center mb-12 md:mb-16">
+        <div className="text-center mb-16 md:mb-20 relative">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full 
+                       bg-primary/10 border border-primary/30 mb-6"
+          >
+            <Sparkles className="w-4 h-4 text-primary" />
+            <span className="text-sm text-primary font-medium">Xizmatlar</span>
+          </motion.div>
+          
           <motion.h3
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-2xl md:text-3xl lg:text-4xl font-bold mb-4"
+            className="text-3xl md:text-4xl lg:text-5xl font-bold mb-5"
           >
-            <span className="text-foreground">Bizning</span>{" "}
-            <span className="text-primary">xizmatlarimiz</span>
+            <span className="text-foreground">Bizning </span>
+            <span className="text-primary neon-text">xizmatlarimiz</span>
           </motion.h3>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
-            className="text-muted-foreground max-w-xl mx-auto"
+            className="text-muted-foreground max-w-2xl mx-auto text-base md:text-lg leading-relaxed"
           >
             Zamonaviy texnologiyalar asosida yaratilgan innovatsion yechimlar
           </motion.p>
         </div>
 
         {/* Feature cards grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 mb-16">
           {features.map((feature, i) => (
             <FeatureCard
               key={i}
@@ -276,6 +290,27 @@ const Index = () => {
             />
           ))}
         </div>
+
+        {/* CTA Button */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.4 }}
+          className="text-center"
+        >
+          <motion.button
+            whileHover={{ scale: 1.05, boxShadow: "0 0 40px rgba(0,217,255,0.5)" }}
+            whileTap={{ scale: 0.95 }}
+            className="px-10 py-4 rounded-xl border-2 border-primary text-primary font-semibold
+                       bg-transparent hover:bg-primary/10 transition-all duration-300
+                       shadow-[0_0_25px_rgba(0,217,255,0.2)] hover:shadow-[0_0_40px_rgba(0,217,255,0.4)]
+                       flex items-center gap-3 mx-auto"
+          >
+            Biz bilan bog'laning
+            <ChevronRight className="w-5 h-5" />
+          </motion.button>
+        </motion.div>
       </section>
 
       {/* ABOUT SECTION */}
