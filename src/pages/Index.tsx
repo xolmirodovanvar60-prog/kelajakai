@@ -135,15 +135,15 @@ const Index = () => {
             }}
             transition={{ duration: 2, repeat: Infinity }}
           >
-            <GraduationCap size={18} className="lg:w-[22px] lg:h-[22px]" />
+            <span className="text-lg lg:text-xl font-black">K</span>
           </motion.div>
           <div>
             <span className="text-lg lg:text-2xl font-black tracking-tighter text-foreground neon-text" style={{ textShadow: '0 0 10px hsl(180 100% 50% / 0.5)' }}>
-              USTOZ.AI
+              KELEJAKAI.UZ
             </span>
             <div className="flex items-center gap-1 text-[10px] text-primary">
               <Sparkles size={10} className="text-accent" />
-              <span className="font-bold">Multimodal AI</span>
+              <span className="font-bold uppercase tracking-wider">AI-Powered Future Platform</span>
             </div>
           </div>
         </div>
@@ -182,7 +182,7 @@ const Index = () => {
               </span>
             </h1>
             <p className="text-sm lg:text-base text-muted-foreground font-medium">
-              Jomboy tuman 46-maktab STEAM labaratoriyasi
+              AI-Powered Future Platform
             </p>
             {/* Features indicator */}
             <div className="flex flex-wrap gap-1.5 mt-2">
