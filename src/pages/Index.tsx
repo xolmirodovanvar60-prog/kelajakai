@@ -19,6 +19,7 @@ import { useState } from "react";
 import WorldMap from "@/components/WorldMap";
 import FeatureCard from "@/components/FeatureCard";
 import OrderModal from "@/components/OrderModal";
+import ChatbotModal from "@/components/ChatbotModal";
 
 const features = [
   {
@@ -46,6 +47,7 @@ const features = [
 const Index = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isOrderModalOpen, setIsOrderModalOpen] = useState(false);
+  const [isChatbotModalOpen, setIsChatbotModalOpen] = useState(false);
 
   return (
     <div className="min-h-screen bg-white text-slate-800 font-sans overflow-x-hidden">
@@ -275,18 +277,59 @@ const Index = () => {
                 Sun'iy intellekt yordamida hujjatlar tayyorlash, chatbotlar yaratish va biznes jarayonlarini avtomatlashtirish.
               </p>
               
-              {/* Features list */}
+              {/* Features list with individual buttons */}
               <div className="grid md:grid-cols-3 gap-4 mb-8">
-                {[
-                  { icon: FileText, text: "Hujjatlar tayyorlash" },
-                  { icon: MessageSquare, text: "Chatbot yaratish" },
-                  { icon: Settings2, text: "Avtomatlashtirish" }
-                ].map((item, i) => (
-                  <div key={i} className="flex items-center gap-2 text-blue-100">
-                    <item.icon className="w-5 h-5" />
-                    <span>{item.text}</span>
+                {/* Hujjatlar tayyorlash */}
+                <div className="flex flex-col gap-3 p-4 rounded-xl bg-white/10">
+                  <div className="flex items-center gap-2 text-white">
+                    <FileText className="w-5 h-5" />
+                    <span className="font-medium">Hujjatlar tayyorlash</span>
                   </div>
-                ))}
+                  <motion.button
+                    onClick={() => setIsOrderModalOpen(true)}
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="px-4 py-2 rounded-lg bg-white/20 text-white text-sm font-medium
+                               hover:bg-white/30 transition-all duration-200 flex items-center justify-center gap-1"
+                  >
+                    Buyurtma berish
+                    <ChevronRight className="w-3 h-3" />
+                  </motion.button>
+                </div>
+
+                {/* Chatbot yaratish */}
+                <div className="flex flex-col gap-3 p-4 rounded-xl bg-white/10">
+                  <div className="flex items-center gap-2 text-white">
+                    <MessageSquare className="w-5 h-5" />
+                    <span className="font-medium">Chatbot yaratish</span>
+                  </div>
+                  <motion.button
+                    onClick={() => setIsChatbotModalOpen(true)}
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="px-4 py-2 rounded-lg bg-white/20 text-white text-sm font-medium
+                               hover:bg-white/30 transition-all duration-200 flex items-center justify-center gap-1"
+                  >
+                    Buyurtma berish
+                    <ChevronRight className="w-3 h-3" />
+                  </motion.button>
+                </div>
+
+                {/* Avtomatlashtirish */}
+                <div className="flex flex-col gap-3 p-4 rounded-xl bg-white/10">
+                  <div className="flex items-center gap-2 text-white">
+                    <Settings2 className="w-5 h-5" />
+                    <span className="font-medium">Avtomatlashtirish</span>
+                  </div>
+                  <motion.button
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="px-4 py-2 rounded-lg bg-white/20 text-white text-sm font-medium
+                               hover:bg-white/30 transition-all duration-200 flex items-center justify-center gap-1"
+                  >
+                    Tez kunda
+                  </motion.button>
+                </div>
               </div>
               
               <motion.button
@@ -636,6 +679,9 @@ const Index = () => {
 
       {/* Order Modal */}
       <OrderModal isOpen={isOrderModalOpen} onClose={() => setIsOrderModalOpen(false)} />
+      
+      {/* Chatbot Modal */}
+      <ChatbotModal isOpen={isChatbotModalOpen} onClose={() => setIsChatbotModalOpen(false)} />
     </div>
   );
 };
