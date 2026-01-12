@@ -58,7 +58,7 @@ const Index = () => {
             <Globe className="w-5 h-5 text-blue-600" />
           </div>
           <h1 className="text-xl md:text-2xl font-bold tracking-wider">
-            <span className="text-blue-600">KELAJAK</span>
+            <span className="text-blue-600">KELAJAKAI</span>
             <span className="text-slate-800">.UZ</span>
           </h1>
         </motion.div>
@@ -353,7 +353,7 @@ const Index = () => {
                     <Globe className="w-5 h-5 text-blue-600" />
                   </div>
                   <h4 className="text-xl font-bold">
-                    <span className="text-blue-600">KELAJAK</span>
+                    <span className="text-blue-600">KELAJAKAI</span>
                     <span className="text-slate-800">.UZ</span>
                   </h4>
                 </div>
@@ -389,7 +389,7 @@ const Index = () => {
             {/* Bottom bar */}
             <div className="pt-8 border-t border-slate-200 flex flex-col md:flex-row justify-between items-center gap-4">
               <p className="text-sm text-slate-500">
-                © 2026 KELAJAK.UZ — Barcha huquqlar himoyalangan
+                © 2026 KELAJAKAI.UZ — Barcha huquqlar himoyalangan
               </p>
               <p className="text-xs text-slate-400">
                 Yaratuvchi: Narzikulov Amirxon Anvarovich
