@@ -18,6 +18,7 @@ import {
 import { useState } from "react";
 import WorldMap from "@/components/WorldMap";
 import FeatureCard from "@/components/FeatureCard";
+import OrderModal from "@/components/OrderModal";
 
 const features = [
   {
@@ -44,6 +45,7 @@ const features = [
 
 const Index = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isOrderModalOpen, setIsOrderModalOpen] = useState(false);
 
   return (
     <div className="min-h-screen bg-white text-slate-800 font-sans overflow-x-hidden">
@@ -288,6 +290,7 @@ const Index = () => {
               </div>
               
               <motion.button
+                onClick={() => setIsOrderModalOpen(true)}
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 className="px-8 py-3.5 rounded-lg bg-white text-blue-600 font-semibold
@@ -630,6 +633,9 @@ const Index = () => {
         {/* Simple accent line at bottom */}
         <div className="h-1 bg-blue-600" />
       </footer>
+
+      {/* Order Modal */}
+      <OrderModal isOpen={isOrderModalOpen} onClose={() => setIsOrderModalOpen(false)} />
     </div>
   );
 };
