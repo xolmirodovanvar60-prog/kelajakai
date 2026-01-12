@@ -26,45 +26,18 @@ const WorldMap = () => {
   ];
 
   return (
-    <div className="relative w-full h-full overflow-hidden">
-      {/* Animated grid background */}
-      <div className="absolute inset-0 opacity-20">
+    <div className="relative w-full h-full overflow-hidden bg-slate-50">
+      {/* Subtle grid background */}
+      <div className="absolute inset-0 opacity-30">
         <svg width="100%" height="100%" className="absolute inset-0">
           <defs>
             <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
-              <path d="M 40 0 L 0 0 0 40" fill="none" stroke="hsl(180 100% 50% / 0.3)" strokeWidth="0.5" />
+              <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#94a3b8" strokeWidth="0.5" />
             </pattern>
           </defs>
           <rect width="100%" height="100%" fill="url(#grid)" />
         </svg>
       </div>
-
-      {/* Horizontal wave animation */}
-      <motion.div
-        className="absolute inset-0 pointer-events-none"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-      >
-        {[...Array(3)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute h-[1px] w-full"
-            style={{
-              top: `${30 + i * 20}%`,
-              background: `linear-gradient(90deg, transparent 0%, hsl(180 100% 50% / 0.4) 50%, transparent 100%)`,
-            }}
-            animate={{
-              x: ["-100%", "100%"],
-            }}
-            transition={{
-              duration: 4 + i,
-              repeat: Infinity,
-              ease: "linear",
-              delay: i * 0.5,
-            }}
-          />
-        ))}
-      </motion.div>
 
       {/* SVG Map */}
       <svg
@@ -80,8 +53,8 @@ const WorldMap = () => {
             y1={`${nodes[from].y}%`}
             x2={`${nodes[to].x}%`}
             y2={`${nodes[to].y}%`}
-            stroke="hsl(180 100% 50% / 0.3)"
-            strokeWidth="0.15"
+            stroke="#93c5fd"
+            strokeWidth="0.2"
             initial={{ pathLength: 0, opacity: 0 }}
             animate={{ pathLength: 1, opacity: 1 }}
             transition={{ duration: 2, delay: i * 0.1 }}
@@ -92,9 +65,8 @@ const WorldMap = () => {
         {connections.slice(0, 8).map(([from, to], i) => (
           <motion.circle
             key={`packet-${i}`}
-            r="0.4"
-            fill="hsl(180 100% 70%)"
-            filter="url(#glow)"
+            r="0.5"
+            fill="#2563eb"
             initial={{ opacity: 0 }}
             animate={{
               cx: [`${nodes[from].x}%`, `${nodes[to].x}%`],
@@ -110,17 +82,6 @@ const WorldMap = () => {
           />
         ))}
 
-        {/* Glow filter */}
-        <defs>
-          <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
-            <feGaussianBlur stdDeviation="0.5" result="coloredBlur" />
-            <feMerge>
-              <feMergeNode in="coloredBlur" />
-              <feMergeNode in="SourceGraphic" />
-            </feMerge>
-          </filter>
-        </defs>
-
         {/* Nodes */}
         {nodes.map((node, i) => (
           <g key={`node-${i}`}>
@@ -130,39 +91,32 @@ const WorldMap = () => {
               cy={`${node.y}%`}
               r="1.5"
               fill="none"
-              stroke="hsl(180 100% 50% / 0.4)"
-              strokeWidth="0.1"
+              stroke="#93c5fd"
+              strokeWidth="0.15"
               initial={{ scale: 0.5, opacity: 0 }}
-              animate={{ scale: [1, 1.5, 1], opacity: [0.5, 0, 0.5] }}
+              animate={{ scale: [1, 1.5, 1], opacity: [0.6, 0, 0.6] }}
               transition={{ duration: 2, repeat: Infinity, delay: i * 0.2 }}
             />
             {/* Main node */}
             <motion.circle
               cx={`${node.x}%`}
               cy={`${node.y}%`}
-              r="0.8"
-              fill="hsl(180 100% 50%)"
-              filter="url(#glow)"
+              r="0.9"
+              fill="#2563eb"
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
               transition={{ duration: 0.5, delay: i * 0.1 }}
             />
-            {/* Inner glow */}
+            {/* Inner highlight */}
             <circle
               cx={`${node.x}%`}
               cy={`${node.y}%`}
-              r="0.4"
-              fill="white"
+              r="0.35"
+              fill="#60a5fa"
             />
           </g>
         ))}
       </svg>
-
-      {/* Corner decorations */}
-      <div className="absolute top-4 left-4 w-8 h-8 border-l-2 border-t-2 border-primary/50" />
-      <div className="absolute top-4 right-4 w-8 h-8 border-r-2 border-t-2 border-primary/50" />
-      <div className="absolute bottom-4 left-4 w-8 h-8 border-l-2 border-b-2 border-primary/50" />
-      <div className="absolute bottom-4 right-4 w-8 h-8 border-r-2 border-b-2 border-primary/50" />
     </div>
   );
 };
