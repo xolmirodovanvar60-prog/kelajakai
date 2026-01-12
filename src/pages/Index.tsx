@@ -9,7 +9,11 @@ import {
   Globe,
   Zap,
   Menu,
-  X
+  X,
+  Check,
+  MessageSquare,
+  FileText,
+  Settings2
 } from "lucide-react";
 import { useState } from "react";
 import WorldMap from "@/components/WorldMap";
@@ -239,7 +243,65 @@ const Index = () => {
           ))}
         </div>
 
-        {/* CTA Button */}
+        {/* AI Services Center Card - Featured */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.3 }}
+          className="max-w-4xl mx-auto mb-16"
+        >
+          <div className="relative bg-gradient-to-br from-blue-600 to-blue-700 rounded-2xl p-8 md:p-10 text-white overflow-hidden">
+            {/* Background decoration */}
+            <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2" />
+            <div className="absolute bottom-0 left-0 w-48 h-48 bg-white/5 rounded-full translate-y-1/2 -translate-x-1/2" />
+            
+            <div className="relative z-10">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-12 h-12 rounded-xl bg-white/20 flex items-center justify-center">
+                  <Bot className="w-6 h-6 text-white" />
+                </div>
+                <span className="px-3 py-1 rounded-full bg-white/20 text-sm font-medium">
+                  Yangi xizmat
+                </span>
+              </div>
+              
+              <h4 className="text-2xl md:text-3xl font-bold mb-4">
+                AI xizmatlar markazi
+              </h4>
+              <p className="text-blue-100 mb-6 max-w-2xl leading-relaxed">
+                Sun'iy intellekt yordamida hujjatlar tayyorlash, chatbotlar yaratish va biznes jarayonlarini avtomatlashtirish.
+              </p>
+              
+              {/* Features list */}
+              <div className="grid md:grid-cols-3 gap-4 mb-8">
+                {[
+                  { icon: FileText, text: "Hujjatlar tayyorlash" },
+                  { icon: MessageSquare, text: "Chatbot yaratish" },
+                  { icon: Settings2, text: "Avtomatlashtirish" }
+                ].map((item, i) => (
+                  <div key={i} className="flex items-center gap-2 text-blue-100">
+                    <item.icon className="w-5 h-5" />
+                    <span>{item.text}</span>
+                  </div>
+                ))}
+              </div>
+              
+              <motion.button
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                className="px-8 py-3.5 rounded-lg bg-white text-blue-600 font-semibold
+                           hover:bg-blue-50 transition-all duration-200
+                           shadow-lg flex items-center gap-2"
+              >
+                Buyurtma berish
+                <ChevronRight className="w-4 h-4" />
+              </motion.button>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* CTA */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -259,6 +321,173 @@ const Index = () => {
             Biz bilan bog'laning
             <ChevronRight className="w-4 h-4" />
           </motion.button>
+        </motion.div>
+      </section>
+
+      {/* PRICING SECTION */}
+      <section id="narxlar" className="relative px-6 md:px-10 lg:px-16 py-20 md:py-28 bg-white">
+        {/* Section header */}
+        <div className="text-center mb-14 md:mb-16 max-w-3xl mx-auto">
+          <motion.span
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="inline-block px-4 py-1.5 rounded-full bg-blue-50 text-blue-600 text-sm font-medium mb-4"
+          >
+            Narxlar
+          </motion.span>
+          <motion.h3
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.1 }}
+            className="text-3xl md:text-4xl font-bold mb-4 text-slate-800"
+          >
+            Obuna rejalarini tanlang
+          </motion.h3>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2 }}
+            className="text-slate-500 text-base md:text-lg leading-relaxed"
+          >
+            Xizmatdan foydalanish orqali daromadingizni oshiring
+          </motion.p>
+        </div>
+
+        {/* Pricing cards */}
+        <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+          {/* Basic */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.1 }}
+            className="bg-white rounded-2xl p-8 border border-slate-200 shadow-[0_4px_20px_rgba(0,0,0,0.06)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.1)] transition-all duration-300"
+          >
+            <h4 className="text-lg font-semibold text-slate-800 mb-2">Basic</h4>
+            <p className="text-sm text-slate-500 mb-6">Boshlang'ich reja</p>
+            <div className="mb-6">
+              <span className="text-4xl font-bold text-slate-800">99,000</span>
+              <span className="text-slate-500 ml-1">so'm/oy</span>
+            </div>
+            <ul className="space-y-3 mb-8">
+              {[
+                "5 ta AI hujjat/oy",
+                "1 ta chatbot",
+                "Email yordam",
+                "Asosiy shablonlar"
+              ].map((item, i) => (
+                <li key={i} className="flex items-center gap-3 text-slate-600 text-sm">
+                  <Check className="w-4 h-4 text-blue-600 flex-shrink-0" />
+                  {item}
+                </li>
+              ))}
+            </ul>
+            <motion.button
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              className="w-full py-3 rounded-lg border-2 border-blue-600 text-blue-600 font-medium
+                         hover:bg-blue-50 transition-all duration-200"
+            >
+              Tanlash
+            </motion.button>
+          </motion.div>
+
+          {/* Standard - Featured */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2 }}
+            className="relative bg-blue-600 rounded-2xl p-8 text-white shadow-[0_8px_30px_rgba(37,99,235,0.3)] transform md:-translate-y-4"
+          >
+            <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 bg-amber-400 text-amber-900 text-sm font-semibold rounded-full">
+              Mashhur
+            </div>
+            <h4 className="text-lg font-semibold mb-2">Standard</h4>
+            <p className="text-blue-200 text-sm mb-6">O'rta reja</p>
+            <div className="mb-6">
+              <span className="text-4xl font-bold">299,000</span>
+              <span className="text-blue-200 ml-1">so'm/oy</span>
+            </div>
+            <ul className="space-y-3 mb-8">
+              {[
+                "25 ta AI hujjat/oy",
+                "5 ta chatbot",
+                "24/7 qo'llab-quvvatlash",
+                "Premium shablonlar",
+                "API integratsiya"
+              ].map((item, i) => (
+                <li key={i} className="flex items-center gap-3 text-blue-100 text-sm">
+                  <Check className="w-4 h-4 text-white flex-shrink-0" />
+                  {item}
+                </li>
+              ))}
+            </ul>
+            <motion.button
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              className="w-full py-3 rounded-lg bg-white text-blue-600 font-semibold
+                         hover:bg-blue-50 transition-all duration-200"
+            >
+              Tanlash
+            </motion.button>
+          </motion.div>
+
+          {/* Premium */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.3 }}
+            className="bg-white rounded-2xl p-8 border border-slate-200 shadow-[0_4px_20px_rgba(0,0,0,0.06)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.1)] transition-all duration-300"
+          >
+            <h4 className="text-lg font-semibold text-slate-800 mb-2">Premium</h4>
+            <p className="text-sm text-slate-500 mb-6">Biznes reja</p>
+            <div className="mb-6">
+              <span className="text-4xl font-bold text-slate-800">599,000</span>
+              <span className="text-slate-500 ml-1">so'm/oy</span>
+            </div>
+            <ul className="space-y-3 mb-8">
+              {[
+                "Cheksiz AI hujjatlar",
+                "Cheksiz chatbotlar",
+                "Shaxsiy menejer",
+                "Maxsus integratsiya",
+                "API + Webhook",
+                "Ustuvor yordam"
+              ].map((item, i) => (
+                <li key={i} className="flex items-center gap-3 text-slate-600 text-sm">
+                  <Check className="w-4 h-4 text-blue-600 flex-shrink-0" />
+                  {item}
+                </li>
+              ))}
+            </ul>
+            <motion.button
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              className="w-full py-3 rounded-lg border-2 border-blue-600 text-blue-600 font-medium
+                         hover:bg-blue-50 transition-all duration-200"
+            >
+              Tanlash
+            </motion.button>
+          </motion.div>
+        </div>
+
+        {/* Bottom CTA */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.4 }}
+          className="text-center mt-12"
+        >
+          <p className="text-slate-500 mb-4">Savollaringiz bormi?</p>
+          <a href="#" className="text-blue-600 font-medium hover:underline">
+            Biz bilan bog'laning →
+          </a>
         </motion.div>
       </section>
 
