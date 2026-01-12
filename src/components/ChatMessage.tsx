@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { User, Volume2, Loader2, Paperclip, FileText, Image as ImageIcon } from 'lucide-react';
+import { User, Volume2, Loader2, FileText, Image as ImageIcon } from 'lucide-react';
 import { Message } from '@/hooks/useHybridAITeacher';
 import { Button } from '@/components/ui/button';
 import { MarkdownRenderer } from '@/components/MarkdownRenderer';
@@ -24,8 +24,8 @@ export function ChatMessage({ message, isLatest, onPlayAudio, isPlayingAudio }: 
       {/* Avatar */}
       <div className={`flex-shrink-0 w-10 h-10 rounded-2xl flex items-center justify-center ${
         isUser 
-          ? 'bg-indigo-100 text-indigo-600' 
-          : 'bg-gradient-to-br from-indigo-600 to-violet-600 text-white shadow-lg shadow-indigo-200'
+          ? 'bg-secondary/20 text-secondary border border-secondary/30' 
+          : 'bg-gradient-to-br from-primary via-secondary to-accent text-primary-foreground neon-glow'
       }`}>
         {isUser ? <User size={18} /> : (
           <span className="text-xs font-black tracking-tight">UAI</span>
@@ -38,7 +38,7 @@ export function ChatMessage({ message, isLatest, onPlayAudio, isPlayingAudio }: 
         {isUser && message.attachments && message.attachments.length > 0 && (
           <div className={`flex gap-1.5 mb-1.5 ${isUser ? 'justify-end' : ''}`}>
             {message.attachments.map((att, i) => (
-              <span key={i} className="inline-flex items-center gap-1 bg-indigo-100 text-indigo-600 px-2 py-0.5 rounded-full text-[10px] font-medium">
+              <span key={i} className="inline-flex items-center gap-1 bg-secondary/20 text-secondary border border-secondary/30 px-2 py-0.5 rounded-full text-[10px] font-medium">
                 {att.type === 'image' ? <ImageIcon size={10} /> : <FileText size={10} />}
                 {att.name.length > 15 ? att.name.slice(0, 12) + '...' : att.name}
               </span>
@@ -48,12 +48,12 @@ export function ChatMessage({ message, isLatest, onPlayAudio, isPlayingAudio }: 
         
         <div className={`inline-block rounded-2xl px-5 py-3 ${
           isUser 
-            ? 'bg-indigo-600 text-white rounded-tr-none' 
-            : 'bg-white/80 backdrop-blur-sm text-slate-700 rounded-tl-none shadow-sm border border-slate-100'
+            ? 'bg-gradient-to-r from-secondary to-accent text-secondary-foreground rounded-tr-none neon-glow-purple' 
+            : 'glass-panel text-foreground rounded-tl-none border border-primary/30'
         }`}>
           {isLoading ? (
             <div className="flex items-center gap-2">
-              <Loader2 size={16} className="animate-spin" />
+              <Loader2 size={16} className="animate-spin text-primary" />
               <span>Javob tayyorlanmoqda...</span>
             </div>
           ) : isUser ? (
@@ -76,7 +76,7 @@ export function ChatMessage({ message, isLatest, onPlayAudio, isPlayingAudio }: 
               size="sm"
               onClick={() => onPlayAudio(message.content)}
               disabled={isPlayingAudio}
-              className="h-7 px-2 text-xs text-indigo-600 hover:text-indigo-700 hover:bg-indigo-50"
+              className="h-7 px-2 text-xs text-primary hover:text-primary hover:bg-primary/20"
             >
               {isPlayingAudio ? (
                 <Loader2 size={14} className="animate-spin mr-1" />
@@ -89,7 +89,7 @@ export function ChatMessage({ message, isLatest, onPlayAudio, isPlayingAudio }: 
         )}
         
         {/* Timestamp */}
-        <p className={`text-[10px] text-slate-400 mt-1 ${isUser ? 'text-right' : ''}`}>
+        <p className={`text-[10px] text-muted-foreground mt-1 ${isUser ? 'text-right' : ''}`}>
           {message.timestamp.toLocaleTimeString('uz-UZ', { hour: '2-digit', minute: '2-digit' })}
         </p>
       </div>
