@@ -5,12 +5,16 @@ import { MentorsHub, mentors } from '@/components/MentorsHub';
 import { LivingBookSection } from '@/components/LivingBookSection';
 import { TimeNavigation, MobileTimeNavigation } from '@/components/TimeNavigation';
 import { AIChatModal } from '@/components/AIChatModal';
+import { VideoPlayerModal } from '@/components/VideoPlayerModal';
+import { ParallaxBackground } from '@/components/ParallaxBackground';
 import { Mentor } from '@/components/MentorCard';
 
 const Index = () => {
   const [activeSection, setActiveSection] = useState('home');
   const [selectedMentor, setSelectedMentor] = useState<Mentor | null>(null);
   const [isChatOpen, setIsChatOpen] = useState(false);
+  const [isVideoOpen, setIsVideoOpen] = useState(false);
+  const [currentVideo, setCurrentVideo] = useState<{ url: string; title: string }>({ url: '', title: '' });
   const mentorsRef = useRef<HTMLDivElement>(null);
 
   const handleExplore = () => {
@@ -32,6 +36,16 @@ const Index = () => {
     setIsChatOpen(true);
   };
 
+  const handlePlayVideo = (mentor: Mentor) => {
+    if (mentor.videoUrl) {
+      setCurrentVideo({ 
+        url: mentor.videoUrl, 
+        title: mentor.videoTitle || `${mentor.name} - ${mentor.topic}` 
+      });
+      setIsVideoOpen(true);
+    }
+  };
+
   const handleOpenLivingBook = () => {
     const bookMentor = mentors.find(m => m.id === 'book');
     if (bookMentor) {
@@ -41,6 +55,9 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
+      {/* Parallax Background */}
+      <ParallaxBackground />
+
       {/* Navigation */}
       <TimeNavigation activeSection={activeSection} onNavigate={handleNavigate} />
       <MobileTimeNavigation activeSection={activeSection} onNavigate={handleNavigate} />
@@ -78,14 +95,17 @@ const Index = () => {
 
       {/* Mentors Hub */}
       <div ref={mentorsRef}>
-        <MentorsHub onChatWithMentor={handleChatWithMentor} />
+        <MentorsHub 
+          onChatWithMentor={handleChatWithMentor} 
+          onPlayVideo={handlePlayVideo}
+        />
       </div>
 
       {/* Living Book Section */}
       <LivingBookSection onOpenBook={handleOpenLivingBook} />
 
       {/* Footer */}
-      <footer className="py-12 px-6 border-t border-primary/20">
+      <footer className="py-12 px-6 border-t border-primary/20 relative z-10">
         <div className="container mx-auto text-center">
           <p className="text-muted-foreground text-sm">
             © 2024 AI-Librarian. Revitalizing Books with AI.
@@ -101,6 +121,14 @@ const Index = () => {
         isOpen={isChatOpen}
         onClose={() => setIsChatOpen(false)}
         mentor={selectedMentor}
+      />
+
+      {/* Video Player Modal */}
+      <VideoPlayerModal
+        isOpen={isVideoOpen}
+        onClose={() => setIsVideoOpen(false)}
+        videoUrl={currentVideo.url}
+        title={currentVideo.title}
       />
     </div>
   );

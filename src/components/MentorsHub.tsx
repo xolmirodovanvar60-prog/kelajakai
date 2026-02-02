@@ -13,6 +13,7 @@ import { MentorCard, Mentor } from '@/components/MentorCard';
 
 interface MentorsHubProps {
   onChatWithMentor: (mentor: Mentor) => void;
+  onPlayVideo: (mentor: Mentor) => void;
 }
 
 export const mentors: Mentor[] = [
@@ -26,6 +27,8 @@ export const mentors: Mentor[] = [
     icon: Sword,
     gradient: 'from-amber-500 to-orange-600',
     accentColor: '#f59e0b',
+    videoUrl: 'https://sample-videos.com/video321/mp4/720/big_buck_bunny_720p_1mb.mp4',
+    videoTitle: 'The Battle of Mud - Epic Conquest',
   },
   {
     id: 'einstein',
@@ -37,6 +40,8 @@ export const mentors: Mentor[] = [
     icon: Atom,
     gradient: 'from-blue-500 to-purple-600',
     accentColor: '#3b82f6',
+    videoUrl: 'https://sample-videos.com/video321/mp4/720/big_buck_bunny_720p_1mb.mp4',
+    videoTitle: 'Warping Space-Time',
   },
   {
     id: 'ibn-sino',
@@ -48,6 +53,8 @@ export const mentors: Mentor[] = [
     icon: Heart,
     gradient: 'from-red-500 to-pink-600',
     accentColor: '#ef4444',
+    videoUrl: 'https://sample-videos.com/video321/mp4/720/big_buck_bunny_720p_1mb.mp4',
+    videoTitle: 'The Human Heart',
   },
   {
     id: 'al-khwarizmi',
@@ -59,6 +66,8 @@ export const mentors: Mentor[] = [
     icon: Calculator,
     gradient: 'from-green-500 to-emerald-600',
     accentColor: '#22c55e',
+    videoUrl: 'https://sample-videos.com/video321/mp4/720/big_buck_bunny_720p_1mb.mp4',
+    videoTitle: 'The Birth of Algebra',
   },
   {
     id: 'ulughbek',
@@ -70,6 +79,8 @@ export const mentors: Mentor[] = [
     icon: Star,
     gradient: 'from-indigo-500 to-violet-600',
     accentColor: '#6366f1',
+    videoUrl: 'https://sample-videos.com/video321/mp4/720/big_buck_bunny_720p_1mb.mp4',
+    videoTitle: '360° Star Map',
   },
   {
     id: 'navoi',
@@ -81,6 +92,8 @@ export const mentors: Mentor[] = [
     icon: BookOpen,
     gradient: 'from-teal-500 to-cyan-600',
     accentColor: '#14b8a6',
+    videoUrl: 'https://sample-videos.com/video321/mp4/720/big_buck_bunny_720p_1mb.mp4',
+    videoTitle: 'Uzbek Calligraphy',
   },
   {
     id: 'curie',
@@ -92,6 +105,8 @@ export const mentors: Mentor[] = [
     icon: FlaskConical,
     gradient: 'from-yellow-500 to-lime-500',
     accentColor: '#eab308',
+    videoUrl: 'https://sample-videos.com/video321/mp4/720/big_buck_bunny_720p_1mb.mp4',
+    videoTitle: 'Glowing Radium',
   },
   {
     id: 'book',
@@ -103,10 +118,12 @@ export const mentors: Mentor[] = [
     icon: Sparkles,
     gradient: 'from-fuchsia-500 to-rose-500',
     accentColor: '#d946ef',
+    videoUrl: 'https://sample-videos.com/video321/mp4/720/big_buck_bunny_720p_1mb.mp4',
+    videoTitle: 'Dragon Awakens',
   },
 ];
 
-export function MentorsHub({ onChatWithMentor }: MentorsHubProps) {
+export function MentorsHub({ onChatWithMentor, onPlayVideo }: MentorsHubProps) {
   return (
     <section id="mentors" className="py-20 px-6 relative">
       {/* Background effects */}
@@ -132,7 +149,7 @@ export function MentorsHub({ onChatWithMentor }: MentorsHubProps) {
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
             Travel through time and learn from history's greatest minds. 
-            Click "Talk to Me" to start an AI-powered conversation.
+            Click "Talk to Me" to start an AI-powered conversation or play videos to visualize their world.
           </p>
         </motion.div>
 
@@ -144,8 +161,8 @@ export function MentorsHub({ onChatWithMentor }: MentorsHubProps) {
               mentor={mentor}
               index={index}
               onChat={onChatWithMentor}
-              hasVideo={mentor.id === 'amir-temur'}
-              onPlayVideo={(m) => console.log('Play video for', m.name)}
+              hasVideo={!!mentor.videoUrl}
+              onPlayVideo={onPlayVideo}
             />
           ))}
         </div>
