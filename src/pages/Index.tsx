@@ -108,10 +108,10 @@ const Index = () => {
       <footer className="py-12 px-6 border-t border-primary/20 relative z-10">
         <div className="container mx-auto text-center">
           <p className="text-muted-foreground text-sm">
-            © 2024 AI-Librarian. Revitalizing Books with AI.
+            © 2024 AI-Librarian. Revitalizing Books with AI
           </p>
           <p className="text-muted-foreground/50 text-xs mt-2">
-            An interactive educational platform for curious minds.
+            JOMBOY TUMAN 46-SONLI MAKTAB "ELO" SENYOR JAMOSI TOMONIDAN ISHLAB CHIQILDI
           </p>
         </div>
       </footer>
