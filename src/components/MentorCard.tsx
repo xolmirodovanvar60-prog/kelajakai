@@ -13,6 +13,8 @@ export interface Mentor {
   icon: LucideIcon;
   gradient: string;
   accentColor: string;
+  videoUrl?: string;
+  videoTitle?: string;
 }
 
 interface MentorCardProps {
@@ -25,6 +27,7 @@ interface MentorCardProps {
 
 export function MentorCard({ mentor, index, onChat, onPlayVideo, hasVideo }: MentorCardProps) {
   const Icon = mentor.icon;
+  const showVideoButton = hasVideo || !!mentor.videoUrl;
 
   return (
     <motion.div
@@ -95,12 +98,13 @@ export function MentorCard({ mentor, index, onChat, onPlayVideo, hasVideo }: Men
               <MessageCircle className="w-4 h-4 mr-2" />
               Talk to Me
             </Button>
-            {hasVideo && onPlayVideo && (
+            {showVideoButton && onPlayVideo && (
               <Button
                 variant="outline"
                 size="icon"
                 onClick={() => onPlayVideo(mentor)}
                 className="border-primary/50 text-primary hover:bg-primary/20"
+                title="Visualize"
               >
                 <Play className="w-4 h-4" />
               </Button>
