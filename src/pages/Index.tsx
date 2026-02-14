@@ -1,5 +1,6 @@
 import { useState, useRef } from 'react';
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import { HeroSection } from '@/components/HeroSection';
 import { MentorsHub, mentors } from '@/components/MentorsHub';
 import { LivingBookSection } from '@/components/LivingBookSection';
@@ -8,6 +9,7 @@ import { AIChatModal } from '@/components/AIChatModal';
 import { VideoPlayerModal } from '@/components/VideoPlayerModal';
 import { ParallaxBackground } from '@/components/ParallaxBackground';
 import { Mentor } from '@/components/MentorCard';
+import { GraduationCap } from 'lucide-react';
 
 const Index = () => {
   const [activeSection, setActiveSection] = useState('home');
@@ -82,10 +84,24 @@ const Index = () => {
             </span>
           </motion.div>
 
-          <div className="glass-panel px-4 py-2 rounded-full">
-            <span className="text-xs font-medium text-primary">
-              🚀 The Time Machine of Knowledge
-            </span>
+          <div className="flex items-center gap-3">
+            <Link to="/school">
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="flex items-center gap-2 px-4 py-2 rounded-full glass-panel hover:bg-primary/10 transition-colors"
+              >
+                <GraduationCap className="w-4 h-4 text-primary" />
+                <span className="text-xs font-medium text-primary hidden sm:inline">
+                  Maktab sayti
+                </span>
+              </motion.button>
+            </Link>
+            <div className="glass-panel px-4 py-2 rounded-full hidden md:block">
+              <span className="text-xs font-medium text-primary">
+                The Time Machine of Knowledge
+              </span>
+            </div>
           </div>
         </div>
       </motion.header>
